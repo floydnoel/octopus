@@ -29,7 +29,8 @@ class App extends Component {
     loggedIn: false,
     accessDenied: false,
     hasUnsavedChanges: false,
-    menu: null
+    menu: null,
+    hideMenu: false,
   };
 
   componentDidMount() {
@@ -193,6 +194,12 @@ class App extends Component {
     });
   }
 
+  hideMenuChanged = (value) => {
+    this.setState({
+      hideMenu: value
+    });
+  }
+
   render() {
     if (this.state.authError) {
       return (
@@ -239,6 +246,7 @@ class App extends Component {
 
     return (
       <div className={wrapperClass.join(' ')}>
+        { this.state.hideMenu ? null :
         <div className="app__menu">
           <p className="app__menu__options">
             <a href="" onClick={() => { firebase.auth().signOut(); return false; }}>Sign out</a> | <NavLink to="/menu">Edit menu</NavLink><br /><br />
@@ -261,10 +269,13 @@ class App extends Component {
           }
 
           <div className="app__menu--made-by">
-            <p>Made by <a href="https://www.livechatinc.com/?utm_source=octopus&utm_medium=menu" target="_blank" rel="noopener noreferrer"><img className="octopus" src="/static/livechat.png" alt="" /></a></p>
-            <p>See <a href="https://github.com/livechat/octopus" target="_blank" rel="noopener noreferrer">Octopus on GitHub</a></p>
+            <div><button onClick={() => { this.hideMenuChanged(true); }}>Hide menu</button></div>
           </div>
+
+          
         </div>
+        }
+
 
         <div className="app__content">
           <Switch>
